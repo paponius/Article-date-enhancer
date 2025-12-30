@@ -1,4 +1,7 @@
-
+/* todo:
+  add Timezone info
+  add (XX hours ago, XX days ago)
+ */
 
 // should be outside of the isolation function, so DEBUG can be used in functions of script files included before this one.
 var DEBUG = ( GM && GM.info.script.name.indexOf('DEBUG') !== -1 ) ? -1 : false;
@@ -136,6 +139,8 @@ switch (true) {
 		checkAge(dateEpochPage, hndInject);
 		break;
 
+	// 'bbc.co.uk' and 'bbc.com' share some notes,
+	// they both are wrapped because they share some variable names. Can't use `let` twice.
 	case location.hostname.includes('bbc.co.uk'): {
 		if (DEBUG) { debugger; }
 		// partially copied from my show_video_date.js
@@ -164,29 +169,34 @@ switch (true) {
 		}
 
 		let firstPublished = objJSON.stores?.article?.metadata?.firstPublished;
+		// difference in seconds for other dates will be ignored. Also, lastUpdated does not have split seconds and seconds are off a bit
+		let strFirstPublished = timeToLocale(firstPublished);
 		setTimeout( () => {
 			var isPublishUpdated = false;
 			var elDate1 = document.querySelector('main#main-content ul[class*="-MetadataStripContainer"] li');
 			let lastPublished = objJSON.stores?.article?.metadata?.lastPublished;
-			if (lastPublished && lastPublished !== firstPublished) {
+			let strLastPublished = timeToLocale(lastPublished);
+			if (lastPublished && strLastPublished !== strFirstPublished) {
 				var elDate2 = elDate1.cloneNode(true);
 				var elText2 = elDate2.querySelector('time');
-				elText2.textContent = 'Last Published: ' + timeToLocale(lastPublished);
+				elText2.textContent = 'Last Published: ' + strLastPublished + ' (local time)';
 				elDate1.after(elDate2);
 				isPublishUpdated = true;
 			}
 			let lastUpdated = objJSON.stores?.article?.metadata?.lastUpdated;
-			if (lastUpdated && lastUpdated !== firstPublished && lastUpdated !== lastPublished) {
+			let strLastUpdated = timeToLocale(lastUpdated);
+			if (lastUpdated && strLastUpdated !== strFirstPublished && strLastUpdated !== strLastPublished) {
 				var elDate3 = elDate1.cloneNode(true);
 				var elText3 = elDate3.querySelector('time');
-				elText3.textContent = 'Last Updated: ' + timeToLocale(lastUpdated);
+				elText3.textContent = 'Last Updated: ' + strLastUpdated + ' (local time)';
 				// elDate2.after(elDate3);
 				elDate1.parentNode.appendChild(elDate3);
 			}
 			if (isPublishUpdated) {
-				elDate1.querySelector('time').textContent = 'First Published: ' + timeToLocale(firstPublished);
+				elDate1.querySelector('time').textContent = 'First Published: ' + strFirstPublished + ' (local time)';
 			} else {
-				elDate1.querySelector('time').textContent = 'Published: ' + timeToLocale(firstPublished);
+				// elDate1.querySelector('time').textContent = 'Published: ' + strFirstPublished + ' (local time)';
+				elDate1.querySelector('time').textContent = strFirstPublished + ' (local time)';
 			}
 			// if (cntDates === 3) { elDate1.parentNode.style.flexDirection = 'column'; }
 		}, 3000);
@@ -200,7 +210,7 @@ switch (true) {
 		}, 3000));
 		break; }
 
-	case location.hostname.includes('bbc.com'): { // wrap because shares a lot of variable names with the one above, can't use `let` twice
+	case location.hostname.includes('bbc.com'): {
 		if (DEBUG) { debugger; }
 		// partially copied from my show_video_date.js
 		let elScript, strJSON;
@@ -218,30 +228,34 @@ switch (true) {
 		}
 
 		let firstPublished = objJSON.props?.pageProps?.metadata?.firstPublished;
+		let strFirstPublished = timeToLocale(firstPublished);
 		let elDate1 = document.querySelector(':where(body > #__next main#main-content > article) :is([data-testid="byline"], [data-testid="byline-new"]) time');
 		// on .com layout, this el. is not reloaded twice, can be set right away
-		elDate1.textContent = 'Published: ' + timeToLocale(firstPublished);
+		elDate1.textContent = strFirstPublished + ' (local time)';
+		// elDate1.textContent = 'Published: ' + strFirstPublished + ' (local time)';
 		setTimeout( () => {
 			var isPublishUpdated = false;
 			var cntDates = 1;
 			var elDate2; // need in second `if`` block too
 			let lastPublished = objJSON.props?.pageProps?.metadata?.lastPublished;
-			if (lastPublished && lastPublished !== firstPublished) {
+			let strLastPublished = timeToLocale(lastPublished);
+			if (lastPublished && strLastPublished !== strFirstPublished) {
 				elDate2 = elDate1.cloneNode(true);
-				elDate2.textContent = 'Last Published: ' + timeToLocale(lastPublished);
+				elDate2.textContent = 'Last Published: ' + strLastPublished + ' (local time)';
 				elDate1.after(elDate2);
 				cntDates++;
 				isPublishUpdated = true;
 			}
 			let lastUpdated = objJSON.props?.pageProps?.metadata?.lastUpdated;
-			if (lastUpdated && lastUpdated !== firstPublished && lastUpdated !== lastPublished) {
+			let strLastUpdated = timeToLocale(lastUpdated);
+			if (lastUpdated && strLastUpdated !== strFirstPublished && strLastUpdated !== strLastPublished) {
 				let elDate3 = elDate1.cloneNode(true);
-				elDate3.textContent = 'Last Updated: ' + timeToLocale(lastUpdated);
+				elDate3.textContent = 'Last Updated: ' + strLastUpdated + ' (local time)';
 				// elDate1.parentNode.appendChild(elDate3); // there is share toolbar, can't append last
 				if (cntDates === 1) { elDate1.after(elDate3); } else { elDate2.after(elDate3); }
 				cntDates++;
 			}
-			if (isPublishUpdated) { elDate1.textContent = 'First Published: ' + timeToLocale(firstPublished); }
+			if (isPublishUpdated) { elDate1.textContent = 'First Published: ' + strFirstPublished + ' (local time)'; }
 
 			if (cntDates === 3) { elDate1.parentNode.style.flexDirection = 'column'; }
 		}, 3000);

@@ -22,7 +22,7 @@
 // @namespace      https://github.com/paponius/
 // @description    Warn about old article, like The Guardian (https://www.theguardian.com/us-news/2025/feb/25/msnbc-layoffs-rachel-maddow). Also add more date info
 // @author         papo
-// @version        1.1.2
+// @version        1.1.4
 // @license        GPLv2
 // @icon           https://archive.org/offshoot_assets/favicon.ico
 
