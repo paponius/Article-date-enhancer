@@ -15,15 +15,15 @@
 // Advantage of external files in development
 // External JS files can be edited in external IDE. (Code in this file can not) This makes development much easier.
 // One file can be Grease Monkey specific, while the rest can be generic. That same files can than be used within a WebExtension.
-// v2.0
+// v2.1
 
 // ==UserScript==
-// @name           Old page warning and more date details
+// @name           Article date: time zone info, add date of an update, warn on older.
 // @namespace      https://github.com/paponius/
-// @description    Warn about old article, like The Guardian (https://www.theguardian.com/us-news/2025/feb/25/msnbc-layoffs-rachel-maddow). Also add more date info
+// @description    Remove confusion by always showing local date. Old article warning inspired by The Guardian.
 // @author         papo
-// @version        1.1.4
-// @license        GPLv2
+// @version        1.1.5
+// @license        CC BY-NC-SA 4.0
 // @icon           https://archive.org/offshoot_assets/favicon.ico
 
 // v1.0 2025-04-07
