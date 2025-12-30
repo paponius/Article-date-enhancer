@@ -174,8 +174,8 @@ switch (true) {
 		setTimeout( () => {
 			var isPublishUpdated = false;
 			var elDate1 = document.querySelector('main#main-content ul[class*="-MetadataStripContainer"] li');
-			let lastPublished = objJSON.stores?.article?.metadata?.lastPublished;
-			let strLastPublished = timeToLocale(lastPublished);
+			var lastPublished = objJSON.stores?.article?.metadata?.lastPublished;
+			var strLastPublished = timeToLocale(lastPublished);
 			if (lastPublished && strLastPublished !== strFirstPublished) {
 				var elDate2 = elDate1.cloneNode(true);
 				var elText2 = elDate2.querySelector('time');
@@ -183,8 +183,8 @@ switch (true) {
 				elDate1.after(elDate2);
 				isPublishUpdated = true;
 			}
-			let lastUpdated = objJSON.stores?.article?.metadata?.lastUpdated;
-			let strLastUpdated = timeToLocale(lastUpdated);
+			var lastUpdated = objJSON.stores?.article?.metadata?.lastUpdated;
+			var strLastUpdated = timeToLocale(lastUpdated);
 			if (lastUpdated && strLastUpdated !== strFirstPublished && strLastUpdated !== strLastPublished) {
 				var elDate3 = elDate1.cloneNode(true);
 				var elText3 = elDate3.querySelector('time');
@@ -229,16 +229,13 @@ switch (true) {
 
 		let firstPublished = objJSON.props?.pageProps?.metadata?.firstPublished;
 		let strFirstPublished = timeToLocale(firstPublished);
-		let elDate1 = document.querySelector(':where(body > #__next main#main-content > article) :is([data-testid="byline"], [data-testid="byline-new"]) time');
-		// on .com layout, this el. is not reloaded twice, can be set right away
-		elDate1.textContent = strFirstPublished + ' (local time)';
-		// elDate1.textContent = 'Published: ' + strFirstPublished + ' (local time)';
 		setTimeout( () => {
+			var elDate1 = document.querySelector(':where(body > #__next main#main-content > article) :is([data-testid="byline"], [data-testid="byline-new"]) time');
 			var isPublishUpdated = false;
 			var cntDates = 1;
 			var elDate2; // need in second `if`` block too
-			let lastPublished = objJSON.props?.pageProps?.metadata?.lastPublished;
-			let strLastPublished = timeToLocale(lastPublished);
+			var lastPublished = objJSON.props?.pageProps?.metadata?.lastPublished;
+			var strLastPublished = timeToLocale(lastPublished);
 			if (lastPublished && strLastPublished !== strFirstPublished) {
 				elDate2 = elDate1.cloneNode(true);
 				elDate2.textContent = 'Last Published: ' + strLastPublished + ' (local time)';
@@ -246,8 +243,8 @@ switch (true) {
 				cntDates++;
 				isPublishUpdated = true;
 			}
-			let lastUpdated = objJSON.props?.pageProps?.metadata?.lastUpdated;
-			let strLastUpdated = timeToLocale(lastUpdated);
+			var lastUpdated = objJSON.props?.pageProps?.metadata?.lastUpdated;
+			var strLastUpdated = timeToLocale(lastUpdated);
 			if (lastUpdated && strLastUpdated !== strFirstPublished && strLastUpdated !== strLastPublished) {
 				let elDate3 = elDate1.cloneNode(true);
 				elDate3.textContent = 'Last Updated: ' + strLastUpdated + ' (local time)';
@@ -255,8 +252,11 @@ switch (true) {
 				if (cntDates === 1) { elDate1.after(elDate3); } else { elDate2.after(elDate3); }
 				cntDates++;
 			}
-			if (isPublishUpdated) { elDate1.textContent = 'First Published: ' + strFirstPublished + ' (local time)'; }
-
+			if (isPublishUpdated) {
+				elDate1.textContent = 'First Published: ' + strFirstPublished + ' (local time)';
+			} else {
+				elDate1.textContent = strFirstPublished + ' (local time)';
+			}
 			if (cntDates === 3) { elDate1.parentNode.style.flexDirection = 'column'; }
 		}, 3000);
 
