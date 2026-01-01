@@ -1,4 +1,4 @@
-# Article date advancer
+# Article date enhancer
 
 Adds information about news article date.
 
@@ -25,7 +25,7 @@ bbc.co.uk
 All have **old article warning**, not all yet show **local time**, it's not possible for all to add **updated date**, some do show it natively.
 
 
-### [Add this UserScript to *Monkey](https://github.com/paponius/Article-date-advancer/raw/master/GM/article-date-advancer.user.js)
+### [Add this UserScript to *Monkey](https://github.com/paponius/Article-date-enhancer/raw/master/GM/article-date-enhancer.user.js)
 
 ---
 

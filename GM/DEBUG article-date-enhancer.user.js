@@ -21,7 +21,7 @@
 
 
 // ==UserScript==
-// @name           DEBUG - Article date advancer
+// @name           DEBUG - Article date enhancer: time zone info, date of an update, warn on older, time where missing.
 // @author         papo
 
 // ###run-at         document-start
@@ -29,7 +29,7 @@
 
 // @noframes
 
-// @require        file://H:\Projects\JS\Article-date-advancer\src\article-date-advancer.js
+// @require        file://H:\Projects\JS\Article-date-enhancer\src\article-date-enhancer.js
 
 
 //// Allowing everything in this debug US:
